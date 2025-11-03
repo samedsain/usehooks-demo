@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
-function App() {
-  const [count, setCount] = useState(0)
+import { ThemeProvider, useTheme } from "./context/ThemeContext";
+import FocusInput from "./components/FocusInput";
+import RenderlessCounter from "./components/RenderlessCounter";
+import MemoDemo from "./components/MemoDemo";
+function ThemedBox() {
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div
+      style={{
+        background: theme === "light" ? "#fff" : "#222",
+        color: theme === "light" ? "#000" : "#fff",
+        padding: "20px",
+        borderRadius: "10px",
+      }}
+    >
+      <p>Current theme: {theme}</p>
+      <button onClick={toggleTheme}>Change Theme</button>
+    </div>
+  );
 }
 
-export default App
+export default function App() {
+  return (
+    <ThemeProvider>
+      <div style={{ padding: 24 }}>
+        <MemoDemo />
+        <ThemedBox />
+        <FocusInput />
+        <RenderlessCounter />
+      </div>
+    </ThemeProvider>
+  );
+}
